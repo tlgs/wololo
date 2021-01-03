@@ -1,0 +1,15 @@
+#!/bin/bash
+
+api () {
+  curl -s 'https://aoe2.net/api/leaderboard?game=aoe2de&leaderboard_id=3&start='"$1"'&count='"$2"
+}
+
+i=1
+n=$(api 1 1 | jq '.total')
+{
+  while [ $i -lt "$n" ]
+  do
+    api $i 1000 | jq '.leaderboard | .[] | .rating'
+    i=$(( i + 1000 ))
+  done
+} | awk '{ a[int($1 / 10)] += 1}; END { for (bin in a) print bin * 10, a[bin]; }'
