@@ -16,4 +16,4 @@ i=1
     api $i 1000 | jq '.leaderboard | .[] | .rating'
     i=$(( i + 1000 ))
   done
-} | awk -v top="$top" 'BEGIN { for (i = 0; i < top / 10; i++) a[i] = 0 }; { a[int($1 / 10)] += 1 }; END { for (bin in a) print bin * 10, a[bin] }'
+} | awk -v hi="$top" -f hist.awk
