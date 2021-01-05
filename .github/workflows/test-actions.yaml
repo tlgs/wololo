@@ -15,5 +15,6 @@ jobs:
         run: |
           git config --global user.name 'GitHub Actions'
           git config --global user.email '<>'
-          git commit -am "chore(data): $(date -u -I)"
+          git add hist.txt
+          git commit -m "chore(data): $(date -u -I)"
           git push
