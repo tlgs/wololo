@@ -8,8 +8,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Call API and generate histogram
-        run: ./.github/scripts/script
-        shell: bash
+        run:  bash .github/scripts/script
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
