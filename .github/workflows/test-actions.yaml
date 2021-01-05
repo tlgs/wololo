@@ -4,10 +4,14 @@ jobs:
   example-job:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
       - name: Call API and generate histogram
         run: ./.github/scripts/script
         shell: bash
-      - name: Upload Artifact
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: output-histogram
