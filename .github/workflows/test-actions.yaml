@@ -1,5 +1,5 @@
 name: test-actions
-on: [workflow_dispatch]
+on: workflow_dispatch
 jobs:
   example-job:
     runs-on: ubuntu-latest
