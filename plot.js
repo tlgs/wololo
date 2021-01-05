@@ -15,8 +15,9 @@ fetch('./hist.txt')
         return { x: [...m.keys()], y: [...m.values()] };
     })
     .then((hist) => {
-        // console.log(data);
-        
+        Chart.defaults.global.defaultFontColor = 'black';
+        Chart.defaults.global.defaultFontFamily = "'Rubik', sans-serif";
+
         new Chart(ctx, {
             type: 'bar',
             data: {
@@ -29,8 +30,8 @@ fetch('./hist.txt')
             options: {
                 title: {
                     display: true,
-                    text: "1v1 Random Map Ladder",
-                    fontSize: 16
+                    text: '1v1 Random Map',
+                    fontStyle: 'normal'
                 },
                 legend: {
                     display: false
@@ -44,6 +45,9 @@ fetch('./hist.txt')
                         labels: hist.x.map(x => x == 0 || x % 100 ? '' : x),
                         ticks: {
                             autoSkip: false
+                        },
+                        gridLines: {
+                            display: false
                         }
                     }],
                     yAxes: [{
@@ -52,6 +56,19 @@ fetch('./hist.txt')
                             labelString: '# of players'
                         }
                     }]
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                    displayColors: false,
+                    callbacks: {
+                        title: function(tooltipItem, data) {
+                            return tooltipItem[0].index * 10 + ' - ' + (tooltipItem[0].index * 10 + 10);
+                        },
+                        label: function(tooltipItem, data) {
+                            return '# of players: ' + tooltipItem.value;
+                        }
+                    }
                 }
             }
         })
