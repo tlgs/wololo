@@ -1,5 +1,7 @@
 #!/bin/bash
 
+DIR=$(cd "$(dirname "$0")" && pwd)
+
 api () {
   curl -s 'https://aoe2.net/api/leaderboard?game=aoe2de&leaderboard_id=3&start='"$1"'&count='"$2"
 }
@@ -16,4 +18,4 @@ i=1
     api $i 1000 | jq '.leaderboard | .[] | .rating'
     i=$(( i + 1000 ))
   done
-} | awk -v hi="$top" -f hist.awk > hist.txt
+} | awk -v hi="$top" -f "$DIR"/hist.awk > hist.txt
