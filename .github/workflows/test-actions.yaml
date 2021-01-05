@@ -1,0 +1,14 @@
+name: test-actions
+on: [workflow_dispatch]
+jobs:
+  example-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call API and generate histogram
+        run: ./.github/scripts/script
+        shell: bash
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: output-histogram
+          path: hist.txt

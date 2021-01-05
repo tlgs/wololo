@@ -16,4 +16,4 @@ i=1
     api $i 1000 | jq '.leaderboard | .[] | .rating'
     i=$(( i + 1000 ))
   done
-} | awk -v hi="$top" -f hist.awk
+} | awk -v hi="$top" -f hist.awk > hist.txt
