@@ -1,5 +1,5 @@
 var ctx = document.getElementById('hist');
-fetch('./hist.txt')
+fetch('./../hist.txt')
     .then((response) => {
         return response.text();
     })
