@@ -57,7 +57,7 @@ var chart = new Chart(ctx, {
     }
 })
 
-fetch('./../hist.txt')
+fetch('./hist.txt')
     .then((response) => {
         return response.text();
     })
