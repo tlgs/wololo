@@ -4,15 +4,20 @@ fetch('./../hist.txt')
         return response.text();
     })
     .then((text) => {
-        let m = new Map();
+        let bins = [];
+        let freqs = [];
+        let ps = [];
+
         let arr = text.split('\n');
         arr.pop();  // trailing newline
 
         for (let i = 0; i < arr.length; i++) {
-            let [k, v] = arr[i].split(' ');
-            m.set(+k, +v);
+            let [b, f, p] = arr[i].split(' ');
+            bins.push(b);
+            freqs.push(f);
+            ps.push(p);
         }
-        return { x: [...m.keys()], y: [...m.values()] };
+        return { x: bins, y: freqs, p: ps };
     })
     .then((hist) => {
         Chart.defaults.global.defaultFontColor = 'black';
@@ -42,10 +47,6 @@ fetch('./../hist.txt')
                             display: true,
                             labelString: 'Rating'
                         },
-                        labels: hist.x.map(x => x == 0 || x % 100 ? '' : x),
-                        ticks: {
-                            autoSkip: false
-                        },
                         gridLines: {
                             display: false
                         }
@@ -63,10 +64,13 @@ fetch('./../hist.txt')
                     displayColors: false,
                     callbacks: {
                         title: function(tooltipItem, data) {
-                            return tooltipItem[0].index * 10 + ' - ' + (tooltipItem[0].index * 10 + 10);
+                            return tooltipItem[0].label + ' - ' + (+tooltipItem[0].label + 99);
                         },
                         label: function(tooltipItem, data) {
                             return '# of players: ' + tooltipItem.value;
+                        },
+                        afterLabel: function(tooltipItem, data) {
+                            return 'percentile: ' + (hist.p[tooltipItem.index] * 100).toFixed(2);
                         }
                     }
                 }
