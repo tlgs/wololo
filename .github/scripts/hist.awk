@@ -1,13 +1,11 @@
-BEGIN {
-    for (i = 0; i < hi; i = i + 10)
-        a[i] = 0
-}
-
 {
-    a[int($1 / 10) * 10] += 1
+    arr[int($1 / bin) * bin] += 1
 }
 
 END {
-    for (i = 0; i < hi; i = i + 10)
-        print i, a[i]
+    for (i = 0; i < hi; i = i + bin) {
+        x = (i in arr ? arr[i] : 0)
+        print i, x, acc / NR
+        acc += x
+    }
 }
