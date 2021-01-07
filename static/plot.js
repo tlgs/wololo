@@ -13,7 +13,7 @@ const histogram = new Chart(ctx, {
         datasets: [{
             backgroundColor: 'MidnightBlue',
             hoverBackgroundColor: 'SlateBlue',
-            barPercentage: 1.03,
+            barPercentage: 1,
             categoryPercentage: 1
         }]
     },
@@ -35,6 +35,9 @@ const histogram = new Chart(ctx, {
                 },
                 gridLines: {
                     display: false
+                },
+                ticks :{
+                    autoSkip: false
                 }
             }],
             yAxes: [{
@@ -73,7 +76,7 @@ fetch('./histogram.json')
         histogram.options.scales.xAxes[0].labels = histogram.data.labels.map(x => (x === 0 || x % 100) ? '' : x);
 
         histogram.options.tooltips.callbacks.title = function(tooltipItem, data) {
-            return `${+tooltipItem[0].label}-${+tooltipItem[0].label + d.binSize - 1}`;
+            return `${tooltipItem[0].index * d.binSize}-${(tooltipItem[0].index + 1) * d.binSize - 1}`;
         };
         histogram.options.tooltips.callbacks.afterLabel = function(tooltipItem, data) {
             const x = data.datasets[tooltipItem.datasetIndex].data;
