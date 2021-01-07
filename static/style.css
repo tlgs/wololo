@@ -1,21 +1,52 @@
 @font-face {
-    font-family: 'Rubik';
-    src: url('Rubik-Regular.ttf');
-  }
+  font-family: 'Rubik';
+  src: url('Rubik-Regular.ttf');
+}
+
+html {
+  font-family: 'Rubik', sans-serif;
+}
 
 h1 {
-    text-align: center;
-    font-family: 'Rubik', sans-serif;
+  text-align: center;
+  font-size: 2em;
 }
 
 .chart-container {
-    position: relative;
-    margin: auto;
-    height: 50vh;
-    width: 50vw;
+  position: relative;
+  margin: auto;
+  width: 50vw;
+  height: 40vh;
 }
 
 footer {
-    text-align: center;
-    margin-top: 5em;
+  position: relative;
+  width: 50vw;
+  margin-top: 5em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+footer h2 {
+  font-size: 1em;
+}
+
+footer p {
+  font-size: 0.8em;
+}
+
+footer mark {
+  background-color: #FFF2A8;
+}
+
+footer code {
+  font-family: monospace, sans-serif;
+  background-color: #E4E6E8;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+#github-logo {
+  text-align: center;
+  padding-top: 1em;
 }

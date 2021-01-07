@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <title>AoE2:DE Ratings</title>
     <link href="static/style.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
   </head>
@@ -17,6 +18,22 @@
   </body>
 
   <footer>
-    <a href="https://github.com/tlgs/aoe2-ladder"><img src="static/GitHub-Mark-32px.png"></a>
+    <h2>What is this?</h2>
+    <p>
+      This is an histogram of the <mark>1v1 Random Map ranked playlist</mark> active population for
+      <a href="https://www.ageofempires.com/games/aoeiide/">Age of Empires II: Definitive Edition</a>.
+    </p>
+    <p>
+      There are a total of <code id="player-count"></code> active players
+      and the median rating is in the <code id="median-rating"></code> range.
+    </p>
+    <p>
+      The underlying data is updated daily and collected by <a href="https://aoe2.net">AoE2.net</a>.
+      Last updated on <code id="latest"></code>.
+    </p>
+
+    <div id="github-logo">
+      <a href="https://github.com/tlgs/wololo"><img  src="static/GitHub-Mark-32px.png"></a>
+    </div>
   </footer>
 </html>
