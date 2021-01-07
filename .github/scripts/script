@@ -9,10 +9,10 @@ api () {
   curl -s 'https://aoe2.net/api/leaderboard?game=aoe2de&leaderboard_id=3&start='"$1"'&count='"$2"
 }
 
-readarray -t arr < <(api 1 1 | jq -c '.total, .leaderboard[0].rating' | tr -d '\r')
+n=$(api 1 1 | jq '.total')
 
 export -f api
 
-seq 1 1000 "${arr[0]}" |
+seq 1 1000 "$n" |
 xargs -L 1 -P 10 -I {} bash -c "api {} 1000 | jq '.leaderboard | .[] | .rating'" |
-awk -v hi="${arr[1]}" -v bin=100 -f hist.awk
+awk -v bin=100 -f histogram.awk
