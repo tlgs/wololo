@@ -7,12 +7,12 @@ Chart.defaults.global.defaultFontColor = 'black';
 Chart.defaults.global.defaultFontFamily = `'Rubik', sans-serif`;
 
 const ctx = document.getElementById('hist');
-const chart = new Chart(ctx, {
+const histogram = new Chart(ctx, {
     type: 'bar',
     data: {
         datasets: [{
-            backgroundColor: 'rgba(25, 25, 112, 1)',
-            hoverBackgroundColor: 'rgba(25, 25, 112, 1)',
+            backgroundColor: 'MidnightBlue',
+            hoverBackgroundColor: 'SlateBlue',
             barPercentage: 1.03,
             categoryPercentage: 1
         }]
@@ -50,45 +50,39 @@ const chart = new Chart(ctx, {
             mode: 'index',
             intersect: false,
             displayColors: false,
+            titleFontSize: 14,
+            bodyFontSize: 13,
             callbacks: {
-                title: function(tooltipItem, data) {
-                    return `${tooltipItem[0].label} - ${+tooltipItem[0].label + 99}`;
-                },
                 label: function(tooltipItem, data) {
                     return `# of players: ${tooltipItem.value}`;
                 }
             }
+        },
+        hover: {
+            mode: 'index',
+            intersect: false,
+            animationDuration: 0
         }
     }
 });
 
-fetch('./hist.txt')
-    .then((response) => response.text())
-    .then((text) => {
-        // slice accounts for trailing newline
-        const arr = text.slice(0, -1).split('\n');
-        const bins = [];
-        const freqs = [];
-        const ps = [];
-
-        for (let i = 0; i < arr.length; i++) {
-            const [b, f, p] = arr[i].split(' ');
-
-            bins.push(b);
-            freqs.push(f);
-            ps.push(p);
-        }
-
-        return {x: bins, y: freqs, percentiles: ps};
-    })
+fetch('./histogram.json')
+    .then((response) => response.json())
     .then((d) => {
-        chart.data.labels = d.x;
-        chart.data.datasets[0].data = d.y;
-        // chart.options.scales.xAxes[0].labels = d.x.map(x => x == 0 || x % 100 ? '' : x);
+        histogram.data.labels = [...Array(d.freqs.length).keys()].map(x => x * d.binSize);
+        histogram.data.datasets[0].data = d.freqs;
 
-        chart.options.tooltips.callbacks.afterLabel = function(tooltipItem, data) {
-            return `percentile: ${(d.percentiles[tooltipItem.index] * 100).toFixed(2)}`;
+        histogram.options.scales.xAxes[0].labels = histogram.data.labels.map(x => (x == 0 || x % 100) ? '' : x);
+
+        histogram.options.tooltips.callbacks.title = function(tooltipItem, data) {
+            return `${+tooltipItem[0].label} - ${+tooltipItem[0].label + d.binSize - 1}`;
+        };
+        histogram.options.tooltips.callbacks.afterLabel = function(tooltipItem, data) {
+            let d = data.datasets[tooltipItem.datasetIndex].data;
+            let p = d.slice(0, tooltipItem.index).reduce((a, b) => a + b, 0) / d.reduce((a, b) => a + b, 0);
+
+            return `percentile ≈ ${(p * 100).toFixed(2)}`;
         };
 
-        chart.update(0);
+        histogram.update(0);
     });
