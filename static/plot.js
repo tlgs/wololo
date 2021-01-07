@@ -1,8 +1,13 @@
-Chart.defaults.global.defaultFontColor = 'black';
-Chart.defaults.global.defaultFontFamily = "'Rubik', sans-serif";
+/*
+ * TODO: Document this.
+ *
+ */
 
-var ctx = document.getElementById('hist');
-var chart = new Chart(ctx, {
+Chart.defaults.global.defaultFontColor = 'black';
+Chart.defaults.global.defaultFontFamily = `'Rubik', sans-serif`;
+
+const ctx = document.getElementById('hist');
+const chart = new Chart(ctx, {
     type: 'bar',
     data: {
         datasets: [{
@@ -47,34 +52,34 @@ var chart = new Chart(ctx, {
             displayColors: false,
             callbacks: {
                 title: function(tooltipItem, data) {
-                    return tooltipItem[0].label + ' - ' + (+tooltipItem[0].label + 99);
+                    return `${tooltipItem[0].label} - ${+tooltipItem[0].label + 99}`;
                 },
                 label: function(tooltipItem, data) {
-                    return '# of players: ' + tooltipItem.value;
+                    return `# of players: ${tooltipItem.value}`;
                 }
             }
         }
     }
-})
+});
 
 fetch('./hist.txt')
-    .then((response) => {
-        return response.text();
-    })
+    .then((response) => response.text())
     .then((text) => {
         // slice accounts for trailing newline
-        let arr = text.slice(0, -1).split('\n');
+        const arr = text.slice(0, -1).split('\n');
+        const bins = [];
+        const freqs = [];
+        const ps = [];
 
-        let bins = [];
-        let freqs = [];
-        let ps = [];
         for (let i = 0; i < arr.length; i++) {
-            let [b, f, p] = arr[i].split(' ');
+            const [b, f, p] = arr[i].split(' ');
+
             bins.push(b);
             freqs.push(f);
             ps.push(p);
         }
-        return { x: bins, y: freqs, percentiles: ps };
+
+        return {x: bins, y: freqs, percentiles: ps};
     })
     .then((d) => {
         chart.data.labels = d.x;
@@ -82,8 +87,8 @@ fetch('./hist.txt')
         // chart.options.scales.xAxes[0].labels = d.x.map(x => x == 0 || x % 100 ? '' : x);
 
         chart.options.tooltips.callbacks.afterLabel = function(tooltipItem, data) {
-            return 'percentile: ' + (d.percentiles[tooltipItem.index] * 100).toFixed(2);
-        }
+            return `percentile: ${(d.percentiles[tooltipItem.index] * 100).toFixed(2)}`;
+        };
 
         chart.update(0);
-    })
+    });
