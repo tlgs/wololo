@@ -1,22 +1,23 @@
-name: update-histogram
-on: workflow_dispatch
+name: build
+on:
+  workflow_dispatch:
 #  schedule:
 #    - cron: "0 2 * * *"
 jobs:
-  example-job:
+  update-histogram:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
 
       - name: Call API and generate histogram
-        run:  ./.github/scripts/script > hist.txt
+        run:  ./.github/scripts/wololo > histogram.json
         shell: bash
 
       - name: Commit file
         run: |
           git config --global user.name 'GitHub Actions'
           git config --global user.email '<>'
-          git add hist.txt
+          git add histogram.json
           git commit -m "chore(data): $(date -u -I)"
           git push
