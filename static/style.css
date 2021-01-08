@@ -37,12 +37,12 @@ footer p {
 }
 
 footer mark {
-  background-color: #FFF2A8;
+  background-color: khaki;
 }
 
 footer code {
   font-family: monospace, sans-serif;
-  background-color: #E4E6E8;
+  background-color: gainsboro;
   padding: 2px 4px;
   border-radius: 3px;
 }

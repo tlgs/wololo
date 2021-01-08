@@ -11,8 +11,8 @@ const histogram = new Chart(ctx, {
     type: 'bar',
     data: {
         datasets: [{
-            backgroundColor: 'MidnightBlue',
-            hoverBackgroundColor: 'SlateBlue',
+            backgroundColor: 'midnightblue',
+            hoverBackgroundColor: 'slateblue',
             barPercentage: 1,
             categoryPercentage: 1
         }]
