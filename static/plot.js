@@ -67,16 +67,17 @@ const histogram = new Chart(ctx, {
     }
 });
 
-fetch('./histogram.json')
+fetch('./random-map.json')
     .then(response => response.json())
     .then(d => {
-        histogram.data.labels = [...Array(d.freqs.length).keys()].map(x => x * d.binSize);
-        histogram.data.datasets[0].data = d.freqs;
+        const h = d.histogram;
+        histogram.data.labels = [...Array(h.freqs.length).keys()].map(x => x * h.binSize);
+        histogram.data.datasets[0].data = h.freqs;
 
         histogram.options.scales.xAxes[0].labels = histogram.data.labels.map(x => (x === 0 || x % 100) ? '' : x);
 
         histogram.options.tooltips.callbacks.title = function(tooltipItem, data) {
-            return `${tooltipItem[0].index * d.binSize}-${(tooltipItem[0].index + 1) * d.binSize - 1}`;
+            return `${tooltipItem[0].index * h.binSize}-${(tooltipItem[0].index + 1) * h.binSize - 1}`;
         };
         histogram.options.tooltips.callbacks.afterLabel = function(tooltipItem, data) {
             const x = data.datasets[tooltipItem.datasetIndex].data;
@@ -87,15 +88,15 @@ fetch('./histogram.json')
 
         histogram.update(0);
 
-        const t = d.freqs.reduce((a, b) => a + b, 0);
+        const t = h.freqs.reduce((a, b) => a + b, 0);
         const playerCount = document.getElementById('player-count');
         playerCount.innerHTML = t;
 
         // see <https://stackoverflow.com/a/44081700> for cumsum magic
-        const cumulative = d.freqs.reduce((a, x, i) => [...a, x + (a[i - 1] || 0)], []);
-        const b = cumulative.findIndex(x => (x / t) > 0.5) * d.binSize;
+        const cumulative = h.freqs.reduce((a, x, i) => [...a, x + (a[i - 1] || 0)], []);
+        const b = cumulative.findIndex(x => (x / t) > 0.5) * h.binSize;
         const median = document.getElementById('median-rating');
-        median.innerHTML = `${b}-${b + d.binSize - 1}`;
+        median.innerHTML = `${b}-${b + h.binSize - 1}`;
 
         const latest = document.getElementById('latest');
         latest.innerHTML = d.date;

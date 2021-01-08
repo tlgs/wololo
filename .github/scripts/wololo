@@ -1,10 +1,22 @@
 #!/bin/bash
 #
+# <script summary here>
+#
+# Bugs
+# ----
+# There is no guarantee that the outputs of the `histogram.awk` and
+# `stats.awk` processes won't be mixed up.
+# The proper way to do this would be for each process to write to a file and
+# then `cat` the outputs.
+# 
 # References
 # ----------
+# <https://mywiki.wooledge.org/BashFAQ/028>: accessing bundled files
 # <https://stackoverflow.com/q/11003418>: bash function with xargs
-# <http://joshmontague.com/posts/2014/create-json-with-jq/>: json from plain text using jq
+# <https://stackoverflow.com/q/23255841>: rejoining stdout from multiple processes
 
+
+cd "${BASH_SOURCE%/*}/" || exit
 
 api () {
   curl -s 'https://aoe2.net/api/leaderboard?game=aoe2de&leaderboard_id=3&start='"$1"'&count='"$2"
@@ -12,22 +24,9 @@ api () {
 
 export -f api
 
-seq 1 1000 "$(api 1 1 | jq '.total')" |
-xargs -L 1 -P 10 -I {} bash -c "api {} 1000 | jq '.leaderboard | .[] | .rating'" |
-awk -v bin="$1" '
-  {
-    max = $1 > max ? $1 : max
-    arr[int($1 / bin) * bin] += 1
-  }
-
-  END {
-    for (i = 0; i < max; i = i + bin) {
-      print (i in arr ? arr[i] : 0)
-    }
-  }' |
-jq --slurp --arg bin "$1" --compact-output '
-  {
-    date: now | todate,
-    binSize: $bin | tonumber,
-    freqs: [.[]]
-  }'
+seq 1 1000 "$(api 1 1 | jq '.total')" \
+  | xargs -P 10 -I {} bash -c "api {} 1000 | jq '.leaderboard | .[] | .rating'" \
+  | tee >(./histogram.awk -v bin="$1" | jq --slurp --arg bin "$1" '{histogram: {binSize: $bin | tonumber, freqs: [.[]]}}') \
+        >(./stats.awk | jq --slurp '{statistics: {mean: .[0], variance: .[1]}}') \
+  > /dev/null \
+  | jq --slurp --compact-output 'add | . + {date: now | todate}'
