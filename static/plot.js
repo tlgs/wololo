@@ -68,8 +68,8 @@ const histogram = new Chart(ctx, {
 });
 
 fetch('./histogram.json')
-    .then((response) => response.json())
-    .then((d) => {
+    .then(response => response.json())
+    .then(d => {
         histogram.data.labels = [...Array(d.freqs.length).keys()].map(x => x * d.binSize);
         histogram.data.datasets[0].data = d.freqs;
 
@@ -86,7 +86,6 @@ fetch('./histogram.json')
         };
 
         histogram.update(0);
-
 
         const t = d.freqs.reduce((a, b) => a + b, 0);
         const playerCount = document.getElementById('player-count');
