@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Call API and generate histogram
-        run:  ./.github/scripts/wololo 100 > random-map.json
+        run:  ./.github/scripts/wololo 25 > random-map.json
         shell: bash
 
       - name: Commit file
