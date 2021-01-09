@@ -36,15 +36,28 @@ footer p {
   font-size: 0.8em;
 }
 
-footer mark {
-  background-color: khaki;
-}
-
 footer code {
   font-family: monospace, sans-serif;
   background-color: gainsboro;
   padding: 2px 4px;
   border-radius: 3px;
+}
+
+#gaussian {
+  background-color: rgba(255, 29, 71, 0.8);
+  padding: 3px 5px;
+  border-radius: 5px;
+}
+
+#logistic {
+  background-color: rgba(70, 255, 29, 0.8);
+  padding: 3px 5px;
+  border-radius: 5px;
+}
+
+#gaussian:hover,
+#logistic:hover {
+  cursor: pointer;
 }
 
 #github-logo {
