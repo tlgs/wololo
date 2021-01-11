@@ -4,14 +4,14 @@ on:
 #  schedule:
 #    - cron: "0 2 * * *"
 jobs:
-  update-histogram:
+  update-data:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
 
-      - name: Call API and generate histogram
-        run:  ./.github/scripts/wololo 25 > random-map.json
+      - name: Call API and crunch
+        run:  ./.github/scripts/wololo 50 > random-map.json
         shell: bash
 
       - name: Commit file
