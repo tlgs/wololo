@@ -5,7 +5,7 @@
 # Bugs
 # ----
 # There is no guarantee that the outputs of the `histogram.awk` and
-# `stats.awk` processes won't be mixed up.
+# `stats.awk` processes won't come out jumbled.
 # The proper way to do this would be for each process to write to a file and
 # then `cat` the outputs.
 # 
