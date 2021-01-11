@@ -14,11 +14,8 @@
 # Notes
 # -----
 # This computes the population variance;
-# multiply by `(NR / (NR - 1))` to obtain the sample variance.
-#
-# References
-# ----------
-# <https://en.wikipedia.org/wiki/Variance#Sample_variance>
+# multiply by `(NR / (NR - 1))` to obtain the sample variance (Bessel's correction).
+
 
 
 {
