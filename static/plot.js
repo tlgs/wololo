@@ -27,6 +27,7 @@ const histogram = new Chart(ctx, {
   data: {
     datasets: [
       {
+        label: 'histogram',
         backgroundColor: 'midnightblue',
         hoverBackgroundColor: 'slateblue',
         barPercentage: 1,
@@ -35,9 +36,10 @@ const histogram = new Chart(ctx, {
         yAxisID: 'hist',
       },
       {
+        label: 'gaussian',
         hidden: true,
         type: 'line',
-        borderColor: 'rgba(255, 29, 71, 0.8)',
+        borderColor: 'orangered',
         fill: false,
         pointRadius: 0,
         pointHoverRadius: 0,
@@ -45,9 +47,10 @@ const histogram = new Chart(ctx, {
         yAxisID: 'pdf',
       },
       {
+        label: 'logistic',
         hidden: true,
         type: 'line',
-        borderColor: 'rgba(70, 255, 29, 0.8)',
+        borderColor: 'teal',
         fill: false,
         pointRadius: 0,
         pointHoverRadius: 0,
