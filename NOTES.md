@@ -2,6 +2,11 @@
 
 Assorted notes taken during development.
 
+1. [GitHub Actions](#GitHub-Actions)
+2. [JavaScript](#JavaScript)
+3. [Bash scripting](#Bash-scripting)
+4. [Other](#Other)
+
 ## GitHub Actions
 
 There is currently no way to anonymously access job artifacts.
@@ -113,6 +118,8 @@ Note though that:
 
 One solution to this is to "_write the output from command2 and command3 to a file and_
 _use `cat` to merge the data as input to command4_".
+
+See <https://stackoverflow.com/q/23255841/5818220> for a discussion.
 
 ---
 
