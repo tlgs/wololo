@@ -4,8 +4,8 @@ See [page](https://tlgs.github.io/wololo).
 
 Minimalist web page about the ranked ladder of Age of Empires II: Definitive Edition.
 
-Data collection using Bash scripting (curl, jq, AWK) through GitHub Actions.
-Front end using [Chart.js](https://www.chartjs.org/) and handwritten HTML/CSS/JavaScript.
+- Data collection using Bash (+ curl, jq, AWK) through GitHub Actions
+- Front end using [Chart.js](https://www.chartjs.org/) and handwritten HTML/CSS/JavaScript
 
 ## Useful references
 
