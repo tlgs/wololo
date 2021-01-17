@@ -43,39 +43,6 @@ footer code {
   border-radius: 3px;
 }
 
-#gaussian,
-#logistic {
-  display: inline-block;
-  padding: 3px 5px;
-  border-radius: 10px;
-  animation-duration: 1s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-
-@keyframes gaussian-morph {
-  from { background-color: rgba(255, 69, 0, 0.2); }
-  to { background-color: rgba(255, 69, 0, 0.8); }
-}
-
-@keyframes logistic-morph {
-  from { background-color: rgba(0, 128, 128, 0.2); }
-  to { background-color: rgba(0, 128, 128, 0.8); }
-}
-
-#gaussian {
-  animation-name: gaussian-morph;
-}
-
-#logistic {
-  animation-name: logistic-morph;
-}
-
-#gaussian:hover,
-#logistic:hover {
-  cursor: pointer;
-}
-
 #github-logo {
   text-align: center;
   padding-top: 1em;

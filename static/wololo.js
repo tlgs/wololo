@@ -3,21 +3,6 @@
  *
  */
 
-function gaussian(x, mu, v) {
-  const n = Math.exp(-((x - mu) ** 2) / (2 * v));
-  const d = Math.sqrt(v) * Math.sqrt(2 * Math.PI);
-
-  return n / d;
-}
-
-function logistic(x, mu, v) {
-  const s = Math.sqrt(3 * v) / Math.PI;
-  const n = Math.exp(-(x - mu) / s);
-  const d = s * (1 + Math.exp(-(x - mu) / s)) ** 2;
-
-  return n / d;
-}
-
 Chart.defaults.global.defaultFontColor = 'black';
 Chart.defaults.global.defaultFontFamily = `'Rubik', sans-serif`;
 
@@ -32,30 +17,6 @@ const histogram = new Chart(ctx, {
         hoverBackgroundColor: 'slateblue',
         barPercentage: 1,
         categoryPercentage: 1,
-        order: 2,
-        yAxisID: 'hist',
-      },
-      {
-        label: 'gaussian',
-        hidden: true,
-        type: 'line',
-        borderColor: 'orangered',
-        fill: false,
-        pointRadius: 0,
-        pointHoverRadius: 0,
-        order: 1,
-        yAxisID: 'pdf',
-      },
-      {
-        label: 'logistic',
-        hidden: true,
-        type: 'line',
-        borderColor: 'teal',
-        fill: false,
-        pointRadius: 0,
-        pointHoverRadius: 0,
-        order: 1,
-        yAxisID: 'pdf',
       },
     ],
   },
@@ -86,15 +47,10 @@ const histogram = new Chart(ctx, {
       ],
       yAxes: [
         {
-          id: 'hist',
           scaleLabel: {
             display: true,
             labelString: '# of players',
           },
-        },
-        {
-          id: 'pdf',
-          display: false,
         },
       ],
     },
@@ -145,14 +101,6 @@ fetch('./random-map.json')
       return `percentile ≈ ${((s / t) * 100).toFixed(2)}`;
     };
 
-    histogram.data.datasets[1].data = histogram.data.labels.map((x) =>
-      gaussian(x, d.statistics.mean, d.statistics.variance)
-    );
-
-    histogram.data.datasets[2].data = histogram.data.labels.map((x) =>
-      logistic(x, d.statistics.mean, d.statistics.variance)
-    );
-
     histogram.update(0);
 
     const t = h.freqs.reduce((a, b) => a + b, 0);
@@ -165,24 +113,14 @@ fetch('./random-map.json')
     const median = document.getElementById('median-rating');
     median.innerHTML = `${b}-${b + h.binSize - 1}`;
 
+    /*
     const mean = document.getElementById('mean-rating');
     mean.innerHTML = d.statistics.mean.toFixed(2);
 
     const stdev = document.getElementById('stdev');
     stdev.innerHTML = Math.sqrt(d.statistics.variance).toFixed(2);
+    */
 
     const latest = document.getElementById('latest');
     latest.innerHTML = d.date;
-
-    const gaussianEl = document.getElementById('gaussian');
-    gaussianEl.addEventListener('click', function () {
-      histogram.data.datasets[1].hidden = !histogram.data.datasets[1].hidden;
-      histogram.update();
-    });
-
-    const logisticEl = document.getElementById('logistic');
-    logisticEl.addEventListener('click', function () {
-      histogram.data.datasets[2].hidden = !histogram.data.datasets[2].hidden;
-      histogram.update();
-    });
   });
