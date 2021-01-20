@@ -1,16 +1,20 @@
 #!/usr/bin/awk -f
 #
-# <script summary here>
+# This script takes a list of numbers separated by newlines
+# and outputs the frequencies of each bin.
+# The bin width must be specified - it's passed to AWK as the `bin` variable;
+# see 'Usage' for an example.
 #
 # Usage
 # -----
-# $ echo '1 1 2 3 4 4 4 5' | tr ' ' '\n' | ./histogram.awk -v bin=1
-# 0
+# $ echo '1 1 2 3 4 4 4 5' | tr ' ' '\n' | ./histogram.awk -v bin=2
 # 2
-# 1
-# 1
-# 3
-# 1
+# 2
+# 4
+#
+# Notes
+# -----
+# The first bin implicitly starts at zero.
 
 
 {
