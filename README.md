@@ -12,7 +12,6 @@ Minimalist web page about the ranked ladder of Age of Empires II: Definitive Edi
 - [AoE2.net](https://aoe2.net)
 - [jq docs](https://stedolan.github.io/jq/manual/)
 - [Chart.js docs](https://www.chartjs.org/docs/latest/)
-- [Development notes](./NOTES.md)
 
 ## Attribution
 

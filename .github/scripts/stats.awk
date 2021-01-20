@@ -17,7 +17,6 @@
 # multiply by `(NR / (NR - 1))` to obtain the sample variance (Bessel's correction).
 
 
-
 {
   sum += $1
   sumsq += $1 ^ 2
