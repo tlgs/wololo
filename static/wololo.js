@@ -113,14 +113,6 @@ fetch('./random-map.json')
     const median = document.getElementById('median-rating');
     median.innerHTML = `${b}-${b + h.binSize - 1}`;
 
-    /*
-    const mean = document.getElementById('mean-rating');
-    mean.innerHTML = d.statistics.mean.toFixed(2);
-
-    const stdev = document.getElementById('stdev');
-    stdev.innerHTML = Math.sqrt(d.statistics.variance).toFixed(2);
-    */
-
     const latest = document.getElementById('latest');
     latest.innerHTML = d.date;
   });
