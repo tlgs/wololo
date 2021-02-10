@@ -1,27 +1,19 @@
 #!/bin/bash
 #
 # This script collects rating data from the AoE2.net API and
-# calculates useful statistics - makes use of the accompanying
-# `stats.awk` and `histogram.awk` scripts.
+# constructs an histogram of the data - through the use of
+# the accompanying `histogram.awk` script.
 # The output is written to stdin in JSON format.
 # It expects a single argument: the bin width to be passed to `histogram.awk`.
 #
 # Usage
 # -----
 # $ ./wololo 50 > random-map.json
-#
-# Bugs
-# ----
-# There is no guarantee that the outputs of the `histogram.awk` and
-# `stats.awk` processes won't come out jumbled;
-# the proper way to do this would be for each process to write to a file and
-# then `cat` the outputs.
 # 
 # References
 # ----------
 # <https://mywiki.wooledge.org/BashFAQ/028>: accessing bundled files
 # <https://stackoverflow.com/q/11003418>: bash function with xargs
-# <https://stackoverflow.com/q/23255841>: rejoining stdout from multiple processes
 
 
 cd "${BASH_SOURCE%/*}/" || exit
@@ -34,7 +26,12 @@ export -f api
 
 seq 1 1000 "$(api 1 1 | jq '.total')" \
   | xargs -P 10 -I {} bash -c "api {} 1000 | jq '.leaderboard | .[] | .rating'" \
-  | tee >(./histogram.awk -v bin="$1" | jq --slurp --arg bin "$1" '{histogram: {binSize: $bin | tonumber, freqs: [.[]]}}') \
-        >(./stats.awk | jq --slurp '{statistics: {mean: .[0], variance: .[1]}}') \
-  > /dev/null \
-  | jq --slurp --compact-output 'add | . + {date: now | todate}'
+  | ./histogram.awk -v bin="$1" \
+  | jq --slurp --compact-output --arg bin "$1" '
+    {
+      histogram: {
+        binSize: $bin | tonumber,
+        freqs: [.[]]
+      },
+      date: now | todate
+    }'
