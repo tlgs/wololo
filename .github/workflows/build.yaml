@@ -21,3 +21,10 @@ jobs:
           git add random-map.json
           git commit -m "chore(data): $(date -u -I)"
           git push
+
+      - name: Upload raw data as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: raw-data
+          path: ./github/.scripts/raw.txt
+          retention-days: 1
