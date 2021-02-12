@@ -26,5 +26,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: raw-data
-          path: ./github/.scripts/raw.txt
+          path: ./.github/scripts/raw.txt
           retention-days: 1
