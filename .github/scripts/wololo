@@ -15,6 +15,7 @@
 # <https://mywiki.wooledge.org/BashFAQ/028>: accessing bundled files
 # <https://stackoverflow.com/q/11003418>: bash function with xargs
 
+set -o pipefail
 
 cd "${BASH_SOURCE%/*}/" || exit
 
