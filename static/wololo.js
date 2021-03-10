@@ -77,8 +77,9 @@ const histogram = new Chart(ctx, {
   },
 });
 
-fetch('./random-map.json')
+fetch('https://api.github.com/gists/30a814de0267b07848f9ec1b1c32420f')
   .then((response) => response.json())
+  .then((raw) => JSON.parse(raw["files"]["random-map.json"]["content"]))
   .then((d) => {
     const h = d.histogram;
     histogram.data.labels = [...Array(h.freqs.length).keys()].map((x) => x * h.binSize);

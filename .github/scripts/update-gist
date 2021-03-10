@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# Requires the $GIST_TOKEN environment variable to be set
+#
+# Usage
+# -----
+# $ ./update-gist GIST_ID FILE
+
+echo "$GIST_TOKEN"
+
+jq  --compact-output --arg f "$2" '{files: {($f): {content: . | tojson }}}' "$2" \
+  | curl \
+      -X POST \
+      -H 'Accept: application/vnd.github.v3+json' \
+      -H "Authorization: token $GIST_TOKEN" \
+      --data-binary @- \
+      https://api.github.com/gists/"$1"

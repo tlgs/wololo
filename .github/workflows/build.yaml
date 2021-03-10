@@ -14,13 +14,11 @@ jobs:
         run:  ./.github/scripts/wololo 50 > random-map.json
         shell: bash
 
-      - name: Commit file
-        run: |
-          git config --global user.name 'GitHub Actions'
-          git config --global user.email '<>'
-          git add random-map.json
-          git commit -m "chore(data): $(date -u -I)"
-          git push
+      - name: Update gist with generated json
+        run: ./.github/scripts/update-gist 30a814de0267b07848f9ec1b1c32420f random-map.json
+        shell: bash
+        env:
+          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
 
       - name: Upload raw data as artifact
         uses: actions/upload-artifact@v2
