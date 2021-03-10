@@ -6,8 +6,6 @@
 # -----
 # $ ./update-gist GIST_ID FILE
 
-echo "$GIST_TOKEN"
-
 jq  --compact-output --arg f "$2" '{files: {($f): {content: . | tojson }}}' "$2" \
   | curl \
       -X POST \
