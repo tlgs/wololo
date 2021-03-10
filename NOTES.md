@@ -2,11 +2,6 @@
 
 Assorted notes taken during development.
 
-1. [GitHub Actions](#GitHub-Actions)
-2. [JavaScript](#JavaScript)
-3. [Bash scripting](#Bash-scripting)
-4. [Other](#Other)
-
 ## GitHub Actions
 
 There is currently no way to anonymously access job artifacts.
