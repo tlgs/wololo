@@ -1,10 +1,16 @@
 #!/bin/bash
 #
 # This script collects rating data from the AoE2.net API and
-# constructs an histogram of the data - through the use of
-# the accompanying `histogram.awk` script.
+# constructs an histogram of the data.
 # The output is written to stdin in JSON format.
-# It expects a single argument: the bin width to be passed to `histogram.awk`.
+# It expects a single argument: the bin width to be passed to the AWK program.
+#
+# The AWK program takes a list of numbers separated by newlines
+# and outputs the frequencies of each bin.
+# The first bin implicitly starts at zero.
+#
+# `-o pipefail` is set to cause the script to exit with a non-zero status
+# in case the API endpoint is unavailable, thus breaking the job.
 #
 # Usage
 # -----
@@ -12,12 +18,9 @@
 # 
 # References
 # ----------
-# <https://mywiki.wooledge.org/BashFAQ/028>: accessing bundled files
 # <https://stackoverflow.com/q/11003418>: bash function with xargs
 
 set -o pipefail
-
-cd "${BASH_SOURCE%/*}/" || exit
 
 api () {
   curl -s 'https://aoe2.net/api/leaderboard?game=aoe2de&leaderboard_id=3&start='"$1"'&count='"$2"
@@ -28,12 +31,22 @@ export -f api
 seq 1 1000 "$(api 1 1 | jq '.total')" \
   | xargs -P 10 -I {} bash -c "api {} 1000 | jq '.leaderboard | .[] | .rating'" \
   | tee 'raw.txt' \
-  | ./histogram.awk -v bin="$1" \
+  | awk -v bin="$1" '
+      {
+        max = $1 > max ? $1 : max
+        arr[int($1 / bin) * bin] += 1
+      }
+
+      END {
+        for (i = 0; i <= max; i = i + bin) {
+          print (i in arr ? arr[i] : 0)
+        }
+      }' \
   | jq --slurp --compact-output --arg bin "$1" '
-    {
-      histogram: {
-        binSize: $bin | tonumber,
-        freqs: [.[]]
-      },
-      date: now | todate
-    }'
+      {
+        histogram: {
+          binSize: $bin | tonumber,
+          freqs: [.[]]
+        },
+        date: now | todate
+      }'
