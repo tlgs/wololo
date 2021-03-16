@@ -12,4 +12,4 @@ jq  --compact-output --arg f "$2" '{files: {($f): {content: . | tojson }}}' "$2"
       -H 'Accept: application/vnd.github.v3+json' \
       -H "Authorization: token $GIST_TOKEN" \
       --data-binary @- \
-      https://api.github.com/gists/"$1"
+      "https://api.github.com/gists/$1"
