@@ -18,30 +18,30 @@
 # <https://stackoverflow.com/q/11003418>: bash function with xargs
 
 api() {
-	curl -s "https://aoe2.net/api/leaderboard?game=aoe2de&leaderboard_id=3&start=$1&count=$2"
+    curl -s "https://aoe2.net/api/leaderboard?game=aoe2de&leaderboard_id=3&start=$1&count=$2"
 }
 
 export -f api
 
 seq 1 1000 "$(api 1 1 | jq '.total')" |
-	xargs -P 10 -I {} bash -c "api {} 1000 | jq '.leaderboard | .[] | .rating'" |
-	tee 'raw.txt' |
-	awk -v bin="$1" '
-    {
-      max = $1 > max ? $1 : max
-      arr[int($1 / bin) * bin] += 1
-    }
+    xargs -P 10 -I {} bash -c "api {} 1000 | jq '.leaderboard | .[] | .rating'" |
+    tee 'raw.txt' |
+    awk -v bin="$1" '
+        {
+            max = $1 > max ? $1 : max
+            arr[int($1 / bin) * bin] += 1
+        }
 
-    END {
-      for (i = 0; i <= max; i = i + bin) {
-        print (i in arr ? arr[i] : 0)
-      }
-    }' |
-	jq --slurp --compact-output --arg bin "$1" '
-    {
-      histogram: {
-        binSize: $bin | tonumber,
-        freqs: [.[]]
-      },
-      date: now | todate
-    }'
+        END {
+            for (i = 0; i <= max; i = i + bin) {
+                print (i in arr ? arr[i] : 0)
+            }
+        }' |
+    jq --slurp --compact-output --arg bin "$1" '
+        {
+            histogram: {
+                binSize: $bin | tonumber,
+                freqs: [.[]]
+            },
+            date: now | todate
+        }'
