@@ -9,9 +9,6 @@
 # and outputs the frequencies of each bin.
 # The first bin implicitly starts at zero.
 #
-# `-o pipefail` is set to cause the script to exit with a non-zero status
-# in case the API endpoint is unavailable, thus breaking the job.
-#
 # Usage
 # -----
 # $ ./wololo 50 > random-map.json
@@ -19,8 +16,6 @@
 # References
 # ----------
 # <https://stackoverflow.com/q/11003418>: bash function with xargs
-
-set -o pipefail
 
 api () {
   curl -s 'https://aoe2.net/api/leaderboard?game=aoe2de&leaderboard_id=3&start='"$1"'&count='"$2"
