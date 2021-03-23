@@ -13,14 +13,14 @@ h1 {
   margin-bottom: 2rem;
 }
 
-main {
+.chart-container {
+  position: relative;
   margin: auto;
   width: 50%;
-  min-height: 30vh;
+  min-height: 40vh;
 }
 
 #description {
-  position: relative;
   width: 50%;
   margin: 5rem auto 0 auto;
 }
@@ -42,5 +42,5 @@ main {
 
 footer {
   text-align: center;
-  padding-top: 1rem;
+  margin-top: 6rem;
 }
