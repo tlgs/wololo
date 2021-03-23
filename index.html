@@ -8,35 +8,35 @@
   </head>
 
   <body>
-    <h1>Age of Empires II: DE <u>rating distribution</u></h1>
+    <main>
+      <h1>Age of Empires II: DE <u>rating distribution</u></h1>
 
-    <div class="chart-container">
       <canvas id="hist"></canvas>
-    </div>
 
-    <script src="static/wololo.js"></script>
+      <script src="static/wololo.js"></script>
+    </main>
+
+    <section id="description">
+      <h2>What's this?</h2>
+
+      <p>
+        This is an histogram of the 1v1 Random Map ranked playlist active population for
+        <a href="https://www.ageofempires.com/games/aoeiide/">Age of Empires II: Definitive Edition</a>.
+      </p>
+
+      <p>
+        There are a total of <code id="player-count"></code> active players
+        and the median rating is in the <code id="median-rating"></code> range.
+      </p>
+
+      <p style="margin-top: 5em">
+        The underlying data is updated daily and collected by <a href="https://aoe2.net">AoE2.net</a>.
+        Last updated on <code id="latest"></code>.
+      </p>
+    </section>
   </body>
 
   <footer>
-    <h2>What's this?</h2>
-
-    <p>
-      This is an histogram of the 1v1 Random Map ranked playlist active population for
-      <a href="https://www.ageofempires.com/games/aoeiide/">Age of Empires II: Definitive Edition</a>.
-    </p>
-
-    <p>
-      There are a total of <code id="player-count"></code> active players
-      and the median rating is in the <code id="median-rating"></code> range.
-    </p>
-
-    <p style="margin-top: 5em">
-      The underlying data is updated daily and collected by <a href="https://aoe2.net">AoE2.net</a>.
-      Last updated on <code id="latest"></code>.
-    </p>
-
-    <div id="github-logo">
-      <a href="https://github.com/tlgs/wololo"><img  src="static/GitHub-Mark-32px.png"></a>
-    </div>
+    <a href="https://github.com/tlgs/wololo"><img  src="static/GitHub-Mark-32px.png"></a>
   </footer>
 </html>
