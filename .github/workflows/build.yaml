@@ -15,12 +15,14 @@ jobs:
         shell: bash
 
       - name: Update gist with generated json
+        if: ${{ success() }}
         run: ./.github/scripts/update-gist 30a814de0267b07848f9ec1b1c32420f random-map.json
         shell: bash
         env:
           GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
 
       - name: Upload raw data as artifact
+        if: ${{ success() }}
         uses: actions/upload-artifact@v2
         with:
           name: raw-data
