@@ -4,7 +4,7 @@
  */
 
 Chart.defaults.global.defaultFontColor = 'black';
-Chart.defaults.global.defaultFontFamily = `'Rubik', sans-serif`;
+Chart.defaults.global.defaultFontFamily = `'-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Helvetica', 'Arial', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji'`;
 
 const ctx = document.getElementById('hist');
 const histogram = new Chart(ctx, {
