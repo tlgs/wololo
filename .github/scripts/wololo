@@ -7,7 +7,9 @@
 #
 # The AWK program takes a list of numbers separated by newlines
 # and outputs the frequencies of each bin.
-# The first bin implicitly starts at zero.
+#  - The first bin implicitly starts at zero.
+#  - Filtering values higher than 3000 (arbitrary) as the API seems to
+#    send out crap sometimes.
 #
 # Usage
 # -----
@@ -27,7 +29,7 @@ seq 1 1000 "$(api 1 1 | jq '.total')" |
     xargs -P 10 -I {} bash -c "api {} 1000 | jq '.leaderboard | .[] | .rating'" |
     tee 'raw.txt' |
     awk -v bin="$1" '
-        {
+        $1 < 3000 {
             max = $1 > max ? $1 : max
             arr[int($1 / bin) * bin] += 1
         }
