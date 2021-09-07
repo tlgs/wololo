@@ -1,4 +1,4 @@
-name: cd
+name: build
 on:
   workflow_dispatch:
   schedule:
