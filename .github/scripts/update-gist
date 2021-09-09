@@ -6,8 +6,8 @@
 # -----
 # $ ./update-gist GIST_ID FILE
 
-jq --compact-output --arg f "$2" '{files: {($f): {content: . | tojson }}}' "$2" |
-  curl \
+jq --compact-output --arg f "$2" '{files: {($f): {content: . | tojson }}}' "$2" \
+  | curl \
     --silent \
     -X POST \
     -H 'Accept: application/vnd.github.v3+json' \
