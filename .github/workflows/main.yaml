@@ -1,8 +1,10 @@
 name: build
+
 on:
   workflow_dispatch:
   schedule:
     - cron: "0 2 * * *"
+
 jobs:
   update-data:
     runs-on: ubuntu-latest
