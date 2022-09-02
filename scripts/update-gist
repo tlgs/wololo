@@ -1,0 +1,18 @@
+#!/bin/bash
+#
+# Requires the $GIST_TOKEN environment variable to be set.
+#
+# Usage
+# -----
+# $ ./update-gist GIST_ID JSON_FILE SVG_FILE
+
+jq -s '{ files: add }' \
+  <(jq --arg f "$2" '{ ($f): { content: . | tojson } }' "$2") \
+  <(jq -sR --arg f "$3" '{ ($f): { content: . } }' "$3") \
+  | curl \
+    --silent \
+    -X POST \
+    -H 'Accept: application/vnd.github+json' \
+    -H "Authorization: token $GIST_TOKEN" \
+    --data-binary @- \
+    "https://api.github.com/gists/$1"

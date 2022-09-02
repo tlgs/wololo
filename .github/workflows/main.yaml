@@ -10,23 +10,39 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Call API and crunch
-        run:  ./.github/scripts/wololo 50 > random-map.json
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install seaborn
         shell: bash
 
-      - name: Update gist with generated json
+      - name: Call API and crunch
+        run:  ./scripts/fetch >stats.json
+        shell: bash
+
+      - name: Plot histogram using Python
         if: ${{ success() }}
-        run: ./.github/scripts/update-gist 30a814de0267b07848f9ec1b1c32420f random-map.json
+        run: python scripts/plot_hist.py <filtered.txt >hist.json
+        shell: bash
+
+      - name: Update gist with JSON and SVG
+        if: ${{ success() }}
+        run: ./scripts/update-gist ab54bc15dfc0f41b6825546d8aa38edf stats.json hist.svg
         shell: bash
         env:
           GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
 
       - name: Upload raw data as artifact
         if: ${{ success() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
-          name: raw-data
-          path: ./raw.txt
+          name: filtered-data
+          path: ./filtered.txt
           retention-days: 1

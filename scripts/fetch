@@ -1,19 +1,19 @@
 #!/bin/bash
 #
 # This script collects rating data from the AoE2.net API and
-# constructs an histogram of the data.
-# The output is written to stdin in JSON format.
-# It expects a single argument: the bin width to be passed to the AWK program.
+# calculates a couple of statistics on the data.
+# The output is written to stdout in JSON format.
 #
 # The AWK program takes a list of numbers separated by newlines
-# and outputs the frequencies of each bin.
-#  - The first bin implicitly starts at zero.
+# and outputs the total count and median.
 #  - Filtering values higher than 3000 (arbitrary) as the API seems to
 #    send out crap sometimes.
 #
+# Additionally, a file `raw.txt` is written with intermediate values.
+#
 # Usage
 # -----
-# $ ./wololo 50 > random-map.json
+# $ ./fetch-stats > stats.json
 #
 # References
 # ----------
@@ -28,23 +28,27 @@ export -f api
 set -o pipefail
 seq 1 1000 "$(api 1 1 | jq '.total')" \
   | xargs -P 10 -I {} bash -c "api {} 1000 | jq '.leaderboard | .[] | .rating'" \
-  | tee 'raw.txt' \
-  | awk -v bin="$1" '
-      $1 < 3000 {
-        max = $1 > max ? $1 : max
-        arr[int($1 / bin) * bin] += 1
-      }
+  | awk '$1 > 0 && $1 < 3000 { print $1 }' \
+  | tee filtered.txt \
+  | sort -n \
+  | awk '
+      { arr[i++] = $1 }
 
       END {
-        for (i = 0; i <= max; i = i + bin) {
-          print (i in arr ? arr[i] : 0)
+        if (i % 2) {
+          median = arr[int(i / 2)]
+        } else {
+          m = int(i / 2)
+          median = (arr[m - 1] + arr[m]) / 2
         }
+
+        print(i, median)
       }' \
-  | jq --slurp --compact-output --arg bin "$1" '
+  | jq --slurp --compact-output '
       {
-        histogram: {
-          binSize: $bin | tonumber,
-          freqs: [.[]]
+        stats: {
+          count: .[0],
+          median: .[1]
         },
-        date: now | todate
+          date: now | todate
       }'

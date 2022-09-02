@@ -3,18 +3,9 @@ repos:
     rev: v4.1.0
     hooks:
       - id: check-added-large-files
-      - id: check-json
       - id: check-yaml
       - id: end-of-file-fixer
       - id: trailing-whitespace
-
-  - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v8.6.0
-    hooks:
-      - id: eslint
-        additional_dependencies:
-          - eslint-config-airbnb-base@14.2.1
-          - eslint-plugin-import@2.24.2
 
   - repo: https://github.com/koalaman/shellcheck-precommit
     rev: v0.8.0
@@ -25,4 +16,4 @@ repos:
     rev: v3.4.2-1
     hooks:
       - id: shfmt
-        args: [-w, -i=2, -ci, -bn, -sr]
+        args: ['-w', '-i=2', '-ci', '-bn']

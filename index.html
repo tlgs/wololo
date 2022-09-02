@@ -1,21 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>AoE2:DE rating distribution</title>
-    <link href="static/style.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+
+    <link rel="shortcut icon" href="#" />
+
+    <link href="static/base.css" rel="stylesheet">
+    <script defer>
+      fetch('https://api.github.com/gists/ab54bc15dfc0f41b6825546d8aa38edf')
+        .then((response) => response.json())
+        .then((raw) => {
+          document.getElementById('hist').src = raw.files['hist.svg'].raw_url;
+
+          const d = JSON.parse(raw.files['stats.json'].content);
+          document.getElementById('player-count').innerHTML = d.stats.count;
+          document.getElementById('median-rating').innerHTML = d.stats.median;
+          document.getElementById('latest').innerHTML = d.date;
+        });
+    </script>
   </head>
 
   <body>
     <main>
       <h1>Age of Empires II: DE <u>rating distribution</u></h1>
 
-      <div class="chart-container">
-        <canvas id="hist"></canvas>
-      </div>
-
-      <script src="static/wololo.js"></script>
+      <img id="hist">
     </main>
 
     <section id="description">
@@ -28,10 +40,10 @@
 
       <p>
         There are a total of <code id="player-count"></code> active players
-        and the median rating is in the <code id="median-rating"></code> range.
+        and the median rating is <code id="median-rating"></code>.
       </p>
 
-      <p style="margin-top: 3rem">
+      <p style="margin-top: 2rem">
         The underlying data is updated daily and collected by <a href="https://aoe2.net">AoE2.net</a>.
         Last updated on <code id="latest"></code>.
       </p>
