@@ -13,7 +13,14 @@ h1 {
 main > img {
   display: block;
   margin: 2rem auto;
+  max-width: 100%;
   height: 40vh;
+}
+
+@media screen and (max-width: 500px) {
+  main > img {
+    height: 30vh;
+  }
 }
 
 #description {
