@@ -29,7 +29,7 @@ jobs:
 
       - name: Plot histogram using Python
         if: ${{ success() }}
-        run: python scripts/plot_hist.py 50 <filtered.txt >hist.json
+        run: python scripts/plot_hist.py 50 <filtered.txt >hist.svg
         shell: bash
 
       - name: Update gist with JSON and SVG
