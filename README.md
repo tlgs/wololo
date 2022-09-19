@@ -4,6 +4,6 @@ See [page](https://tlgs.github.io/wololo).
 
 Minimalist web page about the ranked ladder of Age of Empires II: Definitive Edition.
 
-- Data collection using command line utilities (Bash, curl, jq, AWK) and GitHub Actions
-- Hosting (ab)using Github gists
-- Front end using Seaborn and some handsewn HTML/CSS/JavaScript
+- Data collection using GitHub Actions and some shell scripting
+- Hosting by (ab)using GitHub gists
+- Front end using Seaborn and some handwritten HTML/CSS/JavaScript
