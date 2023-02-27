@@ -9,10 +9,6 @@ import urllib3
 from urllib3.exceptions import MaxRetryError
 from urllib3.util import Retry
 
-RAW_URL = (
-    "https://aoe2.net/api/leaderboard?game=aoe2de&leaderboard_id=3&start={}&count={}"
-)
-
 logger = logging.getLogger(__name__)
 stdout_handler = logging.StreamHandler(sys.stdout)
 stdout_handler.setFormatter(
@@ -25,13 +21,17 @@ stdout_handler.setFormatter(
 
 http = urllib3.PoolManager(timeout=1, retries=Retry(total=5, redirect=0))
 
+base_url = (
+    "https://aoe2.net/api/leaderboard?game=aoe2de&leaderboard_id=3&start={}&count={}"
+)
 
-def setup_logging():
+
+def _setup_logging():
     logger.setLevel(logging.INFO)
     logger.addHandler(stdout_handler)
 
 
-def enable_urllib3_logging():
+def _enable_urllib3_logging():
     urllib3_logger = logging.getLogger("urllib3")
     urllib3_logger.setLevel(logging.INFO)
     urllib3_logger.addHandler(stdout_handler)
@@ -39,7 +39,7 @@ def enable_urllib3_logging():
 
 def get_total_players():
     try:
-        r = http.request("GET", RAW_URL.format(1, 1))
+        r = http.request("GET", base_url.format(1, 1))
     except MaxRetryError:
         logger.critical("hit max retries")
         raise
@@ -63,8 +63,9 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--directory", required=True)
     args = parser.parse_args()
-    setup_logging()
-    enable_urllib3_logging()
+
+    _setup_logging()
+    _enable_urllib3_logging()
 
     try:
         total_players = get_total_players()
@@ -73,7 +74,7 @@ def main():
 
     for i in range(1, total_players, 10_000):
         try:
-            r = http.request("GET", RAW_URL.format(i, 10_000))
+            r = http.request("GET", base_url.format(i, 10_000))
         except MaxRetryError:
             logger.critical("hit max retries")
             return 1
