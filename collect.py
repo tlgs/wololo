@@ -3,7 +3,6 @@ import json
 import logging
 import os
 import sys
-import uuid
 
 import urllib3
 from urllib3.exceptions import MaxRetryError
@@ -19,7 +18,7 @@ stdout_handler.setFormatter(
     )
 )
 
-http = urllib3.PoolManager(timeout=1, retries=Retry(total=5, redirect=0))
+http = urllib3.PoolManager(timeout=3, retries=Retry(total=3, redirect=0))
 
 base_url = (
     "https://aoe2.net/api/leaderboard?game=aoe2de&leaderboard_id=3&start={}&count={}"
@@ -65,29 +64,31 @@ def main():
     args = parser.parse_args()
 
     _setup_logging()
-    _enable_urllib3_logging()
+    # _enable_urllib3_logging()
 
     try:
         total_players = get_total_players()
+        logger.info(f"success {total_players=}")
     except (MaxRetryError, json.JSONDecodeError, ValueError):
         return 1
 
-    for i in range(1, total_players, 10_000):
+    for i, start in enumerate(range(1, total_players, 10_000), start=1):
         try:
-            r = http.request("GET", base_url.format(i, 10_000))
+            r = http.request("GET", base_url.format(start, 10_000))
         except MaxRetryError:
-            logger.critical("hit max retries")
+            logger.critical(f"hit max retries {start=}")
             return 1
 
-        logger.info(
-            f"success {i=} status={r.status} length={r.headers['Content-Length']}"
-        )
+        status = r.status
+        content_length = int(r.headers["Content-Length"])
+        logger.info(f"success {start=} {status=} {content_length=}")
 
         os.makedirs(args.directory, exist_ok=True)
-
-        file_name = str(uuid.uuid4())
-        with open(f"{args.directory}/{file_name}.json", "wb") as f:
+        file_name = f"{i:02}.json"
+        with open(f"{args.directory}/{file_name}", "wb") as f:
             f.write(r.data)
+
+        logger.info(f"wrote file {args.directory}/{file_name}")
 
     return 0
 
