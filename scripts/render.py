@@ -9,13 +9,12 @@ from string import Template
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--directory", required=True)
-    parser.add_argument("-b", "--bin", default=50)
+    parser.add_argument("--input-dir", required=True)
+    # parser.add_argument("-b", "--bin", default=50)
     args = parser.parse_args()
 
-    # collect ratings from JSON files
     ratings = []
-    p = Path(args.directory)
+    p = Path(args.input_dir)
     for child in p.iterdir():
         if not child.is_file():
             continue
@@ -26,12 +25,10 @@ def main():
         for player in content["leaderboard"]:
             ratings.append(player["rating"])
 
-    # create histogram
     frequencies = collections.defaultdict(int)
     for rating in ratings:
         frequencies[rating // args.bin] += 1
 
-    # get template file, and render variables
     p = Path(__file__).parent / "templates" / "index.html"
     with open(p) as f:
         s = Template(f.read())

@@ -31,12 +31,12 @@ jobs:
         run: pip install urllib3
 
       - name: Fetch updated data
-        run: python scripts/collect.py -d data
+        run: python scripts/collect.py --output-dir data
 
       - name: Render template
         run: |
           mkdir public
-          python scripts/render.py -d data > public/index.html
+          python scripts/render.py --input-dir data > public/index.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1

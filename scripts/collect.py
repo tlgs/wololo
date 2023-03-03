@@ -55,7 +55,7 @@ def get_total_players():
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--directory", required=True)
+    parser.add_argument("--output-dir", required=True)
     args = parser.parse_args()
 
     _setup_logging()
@@ -77,12 +77,12 @@ def main():
         content_length = int(r.headers["Content-Length"])
         logger.info(f"success {start=} {status=} {content_length=}")
 
-        os.makedirs(args.directory, exist_ok=True)
+        os.makedirs(args.output_dir, exist_ok=True)
         file_name = f"{i:02}.json"
-        with open(f"{args.directory}/{file_name}", "wb") as f:
+        with open(f"{args.output_dir}/{file_name}", "wb") as f:
             f.write(r.data)
 
-        logger.info(f"wrote file {args.directory}/{file_name}")
+        logger.info(f"wrote file {args.output_dir}/{file_name}")
 
     return 0
 
