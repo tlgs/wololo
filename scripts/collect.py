@@ -9,14 +9,6 @@ from urllib3.exceptions import MaxRetryError
 from urllib3.util import Retry
 
 logger = logging.getLogger(__name__)
-stdout_handler = logging.StreamHandler(sys.stdout)
-stdout_handler.setFormatter(
-    logging.Formatter(
-        "{asctime} [{levelname:<8}] {message}",
-        datefmt="%Y-%m-%d %H:%M:%S",
-        style="{",
-    )
-)
 
 http = urllib3.PoolManager(timeout=3, retries=Retry(total=3, redirect=0))
 
@@ -27,13 +19,16 @@ base_url = (
 
 def _setup_logging():
     logger.setLevel(logging.INFO)
+
+    stdout_handler = logging.StreamHandler(sys.stdout)
+    stdout_handler.setFormatter(
+        logging.Formatter(
+            "{asctime} [{levelname:<8}] {message}",
+            datefmt="%Y-%m-%d %H:%M:%S",
+            style="{",
+        )
+    )
     logger.addHandler(stdout_handler)
-
-
-def _enable_urllib3_logging():
-    urllib3_logger = logging.getLogger("urllib3")
-    urllib3_logger.setLevel(logging.INFO)
-    urllib3_logger.addHandler(stdout_handler)
 
 
 def get_total_players():
@@ -64,7 +59,6 @@ def main():
     args = parser.parse_args()
 
     _setup_logging()
-    # _enable_urllib3_logging()
 
     try:
         total_players = get_total_players()
