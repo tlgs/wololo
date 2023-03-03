@@ -32,7 +32,8 @@ def main():
         frequencies[rating // args.bin] += 1
 
     # get template file, and render variables
-    with open("templates/dummy.html") as f:
+    p = Path(__file__).parent / "templates" / "index.html"
+    with open(p) as f:
         s = Template(f.read())
 
     print(

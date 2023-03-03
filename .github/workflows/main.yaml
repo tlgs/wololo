@@ -11,6 +11,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        shell: bash
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -25,16 +29,15 @@ jobs:
           cache: 'pip'
 
       - name: Install Python dependencies
-        run: pip install -r requirements.txt
+        run: pip install urllib3
 
       - name: Fetch updated data
-        run: python collect.py -d data
+        run: python scripts/collect.py -d data
 
       - name: Render template
         run: |
           mkdir public
-          python render.py -d data > public/index.html
-        shell: bash
+          python scripts/render.py -d data > public/index.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
