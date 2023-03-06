@@ -10,13 +10,88 @@
     <title>AoE II: DE rating distribution</title>
 
     <link rel="shortcut icon" href="#" />
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.min.js"
+      integrity="sha512-GCiwmzA0bNGVsp1otzTJ4LWQT2jjGJENLGyLlerlzckNI30moi2EQT0AfRI7fLYYYDKR+7hnuh35r3y1uJzugw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer">
+    </script>
   </head>
 
   <body>
     <main>
       <h1>Age of Empires II: DE <u>rating distribution</u></h1>
 
-      <p>TODO</p>
+      <div style="position: relative; margin: auto; width: 50%; min-height: 50vh;">
+        <canvas id="histogram"></canvas>
+      </div>
+
+      <script>
+        const ctx = document.getElementById('histogram');
+
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ${labels},
+            datasets: [{
+              label: 'histogram',
+              data: ${data},
+              backgroundColor: 'midnightblue',
+              hoverBackgroundColor: 'slateblue',
+              barPercentage: 1,
+              categoryPercentage: 1,
+            }],
+          },
+          options: {
+            maintainAspectRatio: false,
+            interaction: {
+              mode: 'index',
+              intersect: false,
+            },
+            plugins: {
+              legend: {
+                display: false,
+              },
+              title: {
+                display: true,
+                text: '1v1 Random Map',
+              },
+              tooltip: {
+                displayColors: false,
+                callbacks: {
+                  label: function(context) {
+                    return `# of players: ${context.parsed.y}`;
+                  },
+                  title: function(context) {
+                    const i = context[0].dataIndex;
+                    const bs = ${bin_size};
+
+                    return `${i * bs}-${(i + 1) * bs - 1}`;
+                  },
+                },
+              },
+            },
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Rating',
+                },
+                grid: {
+                  display: false,
+                },
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: '# of players',
+                },
+              },
+            },
+          },
+        });
+      </script>
     </main>
 
     <section>
@@ -34,7 +109,7 @@
 
       <p>
         The underlying data is updated daily and collected by <a href="https://aoe2.net">AoE2.net</a>.
-        Last updated on <code>${update_date}</code>.
+        Last updated on <code>${timestamp}</code>.
       </p>
     </section>
   </body>
