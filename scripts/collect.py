@@ -66,7 +66,7 @@ def main():
     except (MaxRetryError, json.JSONDecodeError, ValueError):
         return 1
 
-    for i, start in enumerate(range(1, total_players, 10_000), start=1):
+    for start in range(1, total_players, 10_000):
         try:
             r = http.request("GET", base_url.format(start, 10_000))
         except MaxRetryError:
@@ -78,6 +78,8 @@ def main():
         logger.info(f"success {start=} {status=} {content_length=}")
 
         os.makedirs(args.output_dir, exist_ok=True)
+
+        i = (start - 1) // 10_000 + 1
         file_name = f"{i:02}.json"
         with open(f"{args.output_dir}/{file_name}", "wb") as f:
             f.write(r.data)
