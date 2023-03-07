@@ -1,7 +1,8 @@
 name: Build and deploy to GitHub Pages
 
 on:
-  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *'
 
 concurrency:
   group: "pages"
